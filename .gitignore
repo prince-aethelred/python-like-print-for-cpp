@@ -3,4 +3,8 @@
 *.pdb
 *.json
 *.dSYM
+*.ilk
+print2
+alt-exp*
+more-exp*
 print
