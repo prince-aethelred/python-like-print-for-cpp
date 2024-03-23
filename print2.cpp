@@ -4,6 +4,8 @@
 #include <type_traits>
 #include <map>
 #include <unordered_map>
+#include <sstream>
+#include <array>
 
 // Typeype trait to check if a type is a container
 template <typename Type, typename _ = void>
@@ -42,7 +44,7 @@ struct is_map<std::unordered_map<Key, Value>>
 // Overload of << operator for containers
 // Requires the container to have begin() and end() methods
 // Requires the container's value_type to have an overloaded << operator
-//namespace py {
+// namespace py {
 template <typename Type>
 typename std::enable_if<is_container<Type>::value && !std::is_same<Type, std::string>::value, std::ostream &>::type
 operator<<(std::ostream &output_stream, const Type &input_container)
@@ -76,57 +78,85 @@ operator<<(std::ostream &output_stream, const Type &input_container)
     }
     return output_stream;
 }
-//}
-
-/**
-    template <template <typename, typename...> class ContainerType, typename ValueType, typename... Args>
-    std::ostream& operator<<(std::ostream& os, const ContainerType<ValueType, Args...>& t) {
-        os << "[";
-        for (auto it = t.begin(); it != t.end(); ++it) {
-            if (it != t.begin()) {
-                os << ", ";
-            }
-            if constexpr (is_map<ContainerType<ValueType, Args...>>::value) {
-                os << it->first << ": " << it->second;
-            } else {
-                os << *it;
-            }
-        }
-        os << "]";
-        return os;
-    }
-
-*/
-
 
 template <typename Type>
 void print(Type &&input)
 {
-    //print(input);
+    // print(input);
     std::cout << input;
-    //std::operator<<(std::cout, input);
+    // std::operator<<(std::cout, input);
 }
-
 
 template <typename Type, typename... Args>
 void print(Type &&input, Args &&...args)
 {
-    //std::operator<<(std::cout, input);
+    // std::operator<<(std::cout, input);
     std::cout << input;
-    std::cout << " ";;
+    std::cout << " ";
+    ;
     print(std::forward<Args>(args)...);
 }
 
+constexpr std::array<int, 1'000'000> fillArray()
+{
+
+    constexpr std::array<int, 1'000'000> arr{0};
+    // for (int i = 0; i < 1'000'000; i++)
+    //{
+    //     arr[i] = 100;
+    // }
+    return arr;
+}
 
 auto main() -> int
 {
-    const char * testch = "hello";
+    // std::vector<std::string> testv;
+
+    // for(int i = 0; i < 1'000'000; i++)
+    //{
+    //     testv.push_back("Hello World!");
+    // }
+    int *testv = new int[1'000'000];
+
+    // const int vs = 1'000'00;
+    // char vstr[] = "Hello World!";
+    // std::array<int, vs> testv;
+    // testv.fill(1);
+    // fillVector(testv);
+    std::ostringstream myout;
+
+    for (int i = 0; i < 1'000'000; i++)
+    {
+        testv[i] = 100;
+        myout << testv[i] << " ";
+    }
+
+    // myout << *testv;
+    std::cout << myout.str();
+
+    delete[] testv;
+
+    std::unique_ptr<std::string[]> array(new std::string[10'000'000]);
+    for (int i = 0; i < 10'000'000; i++)
+    {
+        array[i] = "Hello World!";
+        myout << array[i] << " ";
+    }
+    std::cout << myout.str();
+    // print(myout.str());
+
+    const char *testch = "hello";
     print(testch, 1, 2, 489840, R"(\n)", '\n');
 
     std::string testr = "hello";
-    //print(testr, "Hello", 1, 2.0, 3.0f);
+    // print(testr, "Hello", 1, 2.0, 3.0f);
     std::cout << testr;
     print(testr);
+
+    std::ostringstream oss;
+    oss << testr;
+    print(oss.str());
+
     std::vector<int> v = {1, 2, 3, 4, 5};
     std::cout << v << std::endl;
     print(v, "Hello", 1, 2.0, 3.0f);
