@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <sstream>
 #include <array>
+#include <memory>
 
 // Typeype trait to check if a type is a container
 template <typename Type, typename _ = void>
