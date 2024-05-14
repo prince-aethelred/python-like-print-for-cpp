@@ -7,7 +7,7 @@
 #include <sstream>
 #include <array>
 #include <format>
-#include <print>
+// #include <print>
 #include <string_view>
 #include <iterator>
 #include <utility>
@@ -96,9 +96,9 @@ template <typename Type, typename... Args>
 void print(Type &&input, Args &&...args)
 {
     // std::operator<<(std::cout, input);
-    std::cout << input;
+    std::cout << input << " ";
     // std::print(input);
-    std::print(" ");
+    // std::print(" ");
     print(std::forward<Args>(args)...);
 }
 
